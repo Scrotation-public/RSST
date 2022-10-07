@@ -5,6 +5,7 @@
 *.dat
 *.set
 *.fdt
+*.asv
 *.mat
 
 ### macOS ###
