@@ -4,20 +4,23 @@
 % Buzsaki data also requires bload function from hc-2 crcns.com
 %% Input
 % Data Input
-    path = "/Users/Mingda/Desktop/RSST/Data/Buzsaki HC-2/";
-    file = "ec013.527.dat";
-    plotTitle = "Buzsaki subject 013, trial 527"; % title
+    path = "C:\Users\Celegans\Desktop\EEG\emotiv data\";
+    file = "Psychopy_MingdaH_2022-10-10T170455.349612_EPOCX_160085_2022.10.10T17.04.55.07.00.csv";
+    plotTitle = "asdf"; % title
 
     
-    %currentFreq = 938; % used for .csv files
-    %columnToAnalyze = 2; % used for .csv files
+    currentFreq = 256; % used for .csv files
+    columnToAnalyze = 12; % used for .csv files
+    columnMarkers = 21;
 
-    electrodeNum = 1; % used for .set files
+    %electrodeNum = 1; % used for .set files
 
-    columnToAnalyze = 4; % used for .dat files
-    currentFreq = 20000; % used for .dat files
+    %columnToAnalyze = 4; % used for .dat files
 
-    datasetNum = 49; % used for .mat files
+    
+    %currentFreq = 20000; % used for .dat files
+
+    %datasetNum = 49; % used for .mat files
 
 
     % leave start and end as 0 to include the entire dataset
@@ -65,6 +68,9 @@
     if contains(file,".csv")
         filePath = append(path,file);
         eegTable = readtable(filePath);
+        if columnMarkers ~= 0
+            markerData = eegTable(:,columnMarkers);
+        end
         eegTable = eegTable(:,columnToAnalyze);
         currentData = table2array(eegTable);
     end
@@ -157,6 +163,7 @@
                     'yMin', yMin,...
                     'yMax', yMax,...
                     'boost', boost,...
+                    'markerData', markerData,...
             'savePlotFile',append(path,file));
         end
     else
@@ -174,6 +181,7 @@
             'yMin', yMin,...
             'yMax', yMax,...
             'boost', boost,...
+            'markerData', markerData,...
             'savePlotFile',append(path,file));
     end
 

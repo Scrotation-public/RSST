@@ -12,6 +12,7 @@ function RSSTAnalysis(plotTitle, currentData, currentFreq, varargin)
     default_yMax = 160;
     default_waveParameter = 4;
     default_currentTimeData = [];
+    default_markerData = [];
     default_listBoxAlgorithm = 'SSWT';
     default_switchUnitType = 'Potential';
     default_switchYScale = 'Log';
@@ -35,6 +36,7 @@ function RSSTAnalysis(plotTitle, currentData, currentFreq, varargin)
     addParameter(p, 'useMs', default_useMs, checkOnOff);
     addParameter(p, 'waveParameter', default_waveParameter, @isnumeric)
     addParameter(p, 'currentTimeData', default_currentTimeData, @isnumeric)
+    addParameter(p, 'markerData', default_markerData, @isnumeric)
     addParameter(p, 'sensitivity', default_editFieldSensitivity, @isnumeric)
     addParameter(p, 'yMin', default_yMin, @isnumeric)
     addParameter(p, 'yMax', default_yMax, @isnumeric)
@@ -45,6 +47,9 @@ function RSSTAnalysis(plotTitle, currentData, currentFreq, varargin)
     currentTimeData = p.Results.currentTimeData;
     if isempty(currentTimeData)
         currentTimeData = linspace(0, length(currentData)-1, length(currentData))/currentFreq;
+    end
+    if isempty(markerData)
+        noMarkers = true;
     end
     yMin = p.Results.yMin;
     yMax = p.Results.yMax;
@@ -59,6 +64,7 @@ function RSSTAnalysis(plotTitle, currentData, currentFreq, varargin)
     editFieldSensitivity = p.Results.sensitivity;
     boost = p.Results.boost;
     savePlotFile = p.Results.savePlotFile;
+    markerData = p.Results.markerData;
 
 
 
@@ -189,6 +195,23 @@ function RSSTAnalysis(plotTitle, currentData, currentFreq, varargin)
         cb.TickLabels = round([-1, -0.3, -0.1, -0.03, 0, 0.03, 0.1, 0.3, 1],3);
         factor = 2*editFieldSensitivity;
         cb.Ticks = [Amin, Amin+log10(3)/(factor), Amin+log10(10)/(factor), Amin+log10(30)/(factor), 0, Amax-log10(30)/(factor), Amax-log10(10)/(factor),Amax-log10(3)/(factor), Amax];
+    end
+
+    if ~noMarkers
+        for i = 1:size(markerData)
+            switch markerData(i)
+                case 1
+                    xline(currentTimeData(i),'-r')
+                case 2
+                    xline(currentTimeData(i),'-g')
+                case 3
+                    xline(currentTimeData(i),'-b')
+                case 4
+                    xline(currentTimeData(i),'-c')
+                otherwise
+                    disp('markerData undefined')
+            end
+        end
     end
 
 %% plots frequency x magnitude
